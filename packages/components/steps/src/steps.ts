@@ -2,14 +2,14 @@ import { ExtractPropTypes } from 'vue';
 import { CHANGE_EVENT } from '@el-study/constants';
 import { isNumber } from '@el-study/utils';
 export const stepsProps = {
-  // space: {
-  //   type: [Number, String],
-  //   default: ''
-  // },
-  // active: {
-  //   type: Number,
-  //   default: 0
-  // },
+  space: {
+    type: [Number, String],
+    default: ''
+  },
+  active: {
+    type: Number,
+    default: 0
+  }
   // direction: {
   //   type: String,
   //   default: 'horizontal'
@@ -30,7 +30,7 @@ export const stepsProps = {
   //   values: ['wait', 'process', 'finish', 'error', 'success'],
   //   default: 'process'
   // }
-} as const;
+};
 
 export type StepsProps = ExtractPropTypes<typeof stepsProps>;
 

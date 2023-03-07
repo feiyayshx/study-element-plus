@@ -1,0 +1,11 @@
+@use 'mixins/mixins' as *;
+@use 'common/var' as *;
+
+@include b(step) {
+  position: relative;
+  flex-shrink: 1;
+  @include e('head') {
+    position:relative;
+    width: 100%;
+  }
+}
