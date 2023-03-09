@@ -4,8 +4,74 @@
 @include b(step) {
   position: relative;
   flex-shrink: 1;
+
+  @include pseudo(last-of-type) {
+    @include e(line) {
+      display:none;
+    }
+    @include when(flex) {
+      flex-basis: auto !important;
+      flex-shrink:0;
+      flex-grow: 0;
+    }
+  }
+
   @include e('head') {
     position:relative;
     width: 100%;
+  }
+
+  @include e(icon) {
+    position:relative;
+    z-index:1;
+    display:inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background: #fff; // getCssVar('bg-color');
+    @include when(text) {
+      border-radius: 50%;
+      border:2px solid;
+      border-color: inherit;
+    }
+  }
+
+  @include e(icon-inner) {
+    display: inline-block;
+    user-select: none;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1;
+    color: inherit;
+  }
+
+  @include e(line) {
+    position:absolute;
+    border-color:inherit;
+    background: #999; // getCssVar('text-color','placeholder');
+  }
+
+  @include e(line-inner) {
+    display: block;
+    border-width:1px;
+    border-style: solid;
+    border-color: inherit;
+    transition: 0.15s ease-out;
+    box-sizing: border-box;
+    width:0;
+    height:0;
+  }
+
+  @include when(horizontal) {
+    display:inline-block;
+    @include e(line) {
+      height: 2px;
+      top: 11px;
+      left:0;
+      right:0;
+    }
   }
 }

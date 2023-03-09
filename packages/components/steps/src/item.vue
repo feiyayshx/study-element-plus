@@ -1,10 +1,15 @@
 <template>
-  <div :class="[ns.b()]">
+  <div
+    :style="style"
+    :class="[ns.b(), ns.is(parent.props.direction), ns.is('flex', isLast && !space)]"
+  >
     <div :class="[ns.e('head')]">
-      <div :class="[ns.e('line')]"></div>
-      <div :class="[ns.e('icon')]">
+      <div :class="[ns.e('line')]">
+        <i :class="ns.e('line-innter')" :style="lineStyle"></i>
+      </div>
+      <div :class="[ns.e('icon'), ns.is('text')]">
         <slot name="icon">
-          <div :class="[ns.e('icon-inner')]"></div>
+          <div :class="[ns.e('icon-inner')]">{{ index + 1 }}</div>
         </slot>
       </div>
     </div>
@@ -18,20 +23,23 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { ref, reactive, inject, computed, getCurrentInstance } from 'vue';
 import { useNamespace } from '@el-study/hooks';
 import { stepProps } from './item';
-import type { Ref } from 'vue';
+import { isNumber } from '@el-study/utils';
+import type { CSSProperties, Ref } from 'vue';
 
 export interface IStepsProps {
   space: number | string;
   active: number;
+  direction: string;
+  simple: boolean;
 }
 
 export interface StepItemState {
   uid: number | undefined;
   // currentStatus: string;
-  // setIndex: (val: number) => void;
+  setIndex: (val: number) => void;
   // calcProgress: (status: string) => void;
 }
 
@@ -46,7 +54,52 @@ defineOptions({
 
 const props = defineProps(stepProps);
 const parent = inject('ElSteps') as IStepsInject;
+const index = ref(-1);
 const ns = useNamespace('step');
+const currentInstance = getCurrentInstance();
+
+const lineStyle = ref({});
+
+const isSimple = computed(() => {
+  return parent.props.simple;
+});
+
+const stepsCount = computed(() => {
+  return parent.steps.value.length;
+});
+
+const isLast = computed(() => {
+  return parent.steps.value[stepsCount.value - 1]?.uid === currentInstance?.uid;
+});
+
+const space = computed(() => {
+  return isSimple.value ? '' : parent.props.space;
+});
+
+const style = computed(() => {
+  const style: CSSProperties = {
+    flexBasis: isNumber(space.value)
+      ? `${space.value}px`
+      : space.value
+      ? space.value
+      : `${100 / (stepsCount.value - 1)}%`
+  };
+  // if (isVertical.value) return style;
+  if (isLast.value) {
+    style.maxWidth = `${100 / stepsCount.value}%`;
+  }
+  return style;
+});
+
+const setIndex = (val: number) => {
+  index.value = val;
+};
+
+const stepItemState = reactive({
+  uid: computed(() => currentInstance?.uid),
+  setIndex
+});
+parent.steps.value = [...parent.steps.value, stepItemState];
 </script>
 
 <style lang="scss" scoped></style>

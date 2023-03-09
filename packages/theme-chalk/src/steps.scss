@@ -4,4 +4,7 @@
 
 @include b(steps) {
   display: flex;
+  @include m(horizontal) {
+    white-space: nowrap;
+  }
 }

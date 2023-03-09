@@ -9,17 +9,18 @@ export const stepsProps = {
   active: {
     type: Number,
     default: 0
-  }
-  // direction: {
-  //   type: String,
-  //   default: 'horizontal'
-  // },
+  },
+  direction: {
+    type: String,
+    default: 'horizontal',
+    values: ['horizontal', 'vertical']
+  },
   // alignCenter: {
   //   type: Boolean
   // },
-  // simple: {
-  //   type: Boolean
-  // },
+  simple: {
+    type: Boolean
+  }
   // finishStatus: {
   //   type: String,
   //   values: ['wait', 'process', 'finish', 'error', 'success'],

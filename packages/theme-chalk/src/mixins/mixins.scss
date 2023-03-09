@@ -124,3 +124,9 @@
     }
   }
 }
+
+@mixin pseudo($pseudo) {
+  @at-root #{&}#{':#{$pseudo}'} {
+    @content;
+  }
+}
